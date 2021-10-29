@@ -43,3 +43,30 @@ function saveRecord(record) {
     // add record to your store
     budgetObjectStore.add(record);
 }
+
+function uploadTransaction() {
+
+    // open transaction on db
+    const transaction = db.transaction(['new_transaction'], 'readwrite');
+
+    // access object store
+    const budgetObjectStore = transaction.objectStore('new_transaction');
+
+    // get all records from store and set to a variable
+    const getAll = budgetObjectStore.getAll();
+
+    getAll.onsuccess = function() {
+
+        // send data in indexedDB's store to the api server 
+        if (getAll.result.length > 0) {
+            fetch('/api/transaction', {
+                method: 'POST',
+                body: JSON.stringify(getAll.result),
+                headers: {
+                    Accept: 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                }
+            })
+        }
+    }
+}
