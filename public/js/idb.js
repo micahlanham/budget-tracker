@@ -92,3 +92,6 @@ function uploadTransaction() {
         }
     }
 }
+
+// listen for app when it comes back online
+window.addEventListener('online', uploadTransaction);
