@@ -20,8 +20,26 @@ request.onsuccess = function(event) {
     // when db is created succesfully with its object store
     db = event.target.result;
 
-    // check if app is online. if yes then run uploadTransaction() function to send local db data to api
+    // check if app is online
     if (navigator.online) {
 
     }
 };
+
+request.onerror = function(event) {
+    // log error
+    console.log(event.target.errorCode);
+};
+
+// Function will be executed if we try to submit a new transaction and there is no internet
+function saveRecord(record) {
+
+    // open new transaction with read and write permissions
+    const transaction = db.transaction(['new_transaction'], 'readwrite');
+
+    // access the object store for 'new_transaction'
+    const budgetObjectStore = transaction.objectStore('new_transaction');
+
+    // add record to your store
+    budgetObjectStore.add(record);
+}
