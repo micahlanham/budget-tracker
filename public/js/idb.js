@@ -1,5 +1,3 @@
-const { ServerResponse } = require("http");
-
 // create variable for db connection
 let db;
 
